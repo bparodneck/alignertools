@@ -297,6 +297,11 @@ Press enter to use default"""
 		# parse name formats; get indices for names
 		column_names = parse(exp_string, "_")
 		file_name_format = parse(sound_string, "_")
+		
+		# if experiment file contains only filename column, change sound file name format
+		# so that columns are indexed correctly
+		if column_names == ["filename"]:
+			file_name_format = parse(u'filename', "_")
 		name_index = indexer(file_name_format, column_names)
 		
 		# parse experiment files; assign labels
@@ -351,6 +356,10 @@ Press enter to use default"""
 			# parse file name; store useful parts to list
 			parsed_filename = parse(filename, "_")
 			bits = reader(parsed_filename, name_index)
+			
+			# if exp_file has a single filename column, make the matching bits a single item equal to the file name
+			if column_names == ["filename"]:
+				bits = [filename]
 	
 			# find the right row in the experiment file
 			row_found = False
